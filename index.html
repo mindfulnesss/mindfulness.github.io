@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindfulness y Compasión en Psicoterapia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA (Single Page Application) con una estructura temática y navegación fija para facilitar la usabilidad. La arquitectura es la siguiente: 1. Sección de Inicio (Hero): Captura la atención y presenta el tema. 2. Conceptos Clave: Una sección de dos columnas para comparar y definir claramente Mindfulness y Compasión. 3. Modelos Principales: Un sistema de pestañas interactivas para explorar los modelos principales, ahora incluyendo MSC. 4. Prácticas Fundamentales: Una cuadrícula de tarjetas para describir ejercicios prácticos con ejemplos aplicables. 5. Evidencia y Beneficios: Combina texto, un gráfico de barras interactivo (Chart.js) para visualizar la eficacia, y tarjetas para destacar los beneficios. 6. Referencias: Una lista final para credibilidad. Esta estructura fue elegida porque transforma un informe denso en una experiencia de aprendizaje autoguiada, permitiendo al usuario explorar la información de forma no lineal y centrarse en las áreas de su interés, mejorando la comprensión y retención. -->
+    <!-- Visualization & Content Choices: 1. Definiciones: Presentadas en columnas lado a lado (HTML/Tailwind) para una comparación directa y clara. Objetivo: Informar/Comparar. 2. Modelos Terapéuticos: Organizados en un sistema de pestañas (HTML/CSS/JS) para evitar una larga pared de texto y permitir la exploración enfocada. Objetivo: Organizar/Explorar. 3. Prácticas: Presentadas en una cuadrícula de tarjetas con iconos (HTML/Tailwind) y texto expandido con ejemplos prácticos para una mayor profundidad. Objetivo: Informar/Ejemplificar/Capacitar. 4. Eficacia Terapéutica: Visualizada con un gráfico de barras interactivo (Chart.js en Canvas) para mostrar la efectividad en diferentes trastornos. Objetivo: Comparar/Demostrar. Interacción: Tooltips al pasar el ratón. Justificación: Los datos cuantitativos son más impactantes y fáciles de digerir visualmente. 5. Beneficios: Presentados en una cuadrícula de tarjetas con iconos (HTML/Tailwind) para una lectura rápida y atractiva. Objetivo: Resumir/Informar. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF8F0;
+            color: #2D4250;
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #C97C5D;
+        }
+        .tab-button.active {
+            background-color: #5A8D8D;
+            color: #FDF8F0;
+            border-color: #5A8D8D;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-[#2D4250]">Salud Mental y Bienestar</h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#inicio" class="nav-link font-medium">Inicio</a>
+                <a href="#conceptos" class="nav-link font-medium">Conceptos Clave</a>
+                <a href="#modelos" class="nav-link font-medium">Programas</a>
+                <a href="#tecnicas" class="nav-link font-medium">Prácticas</a>
+                <a href="#evidencia" class="nav-link font-medium">Evidencia</a>
+                <a href="#referencias" class="nav-link font-medium">Referencias</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md">
+                <span class="block w-6 h-0.5 bg-[#2D4250] mb-1"></span>
+                <span class="block w-6 h-0.5 bg-[#2D4250] mb-1"></span>
+                <span class="block w-6 h-0.5 bg-[#2D4250]"></span>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#inicio" class="block py-2 px-6 text-sm">Inicio</a>
+            <a href="#conceptos" class="block py-2 px-6 text-sm">Conceptos Clave</a>
+            <a href="#modelos" class="block py-2 px-6 text-sm">Programas</a>
+            <a href="#tecnicas" class="block py-2 px-6 text-sm">Prácticas</a>
+            <a href="#evidencia" class="block py-2 px-6 text-sm">Evidencia</a>
+            <a href="#referencias" class="block py-2 px-6 text-sm">Referencias</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold text-[#2D4250] mb-4">Mindfulness y Compasión</h2>
+                <p class="text-lg md:text-xl text-[#5A8D8D] mb-8 max-w-3xl mx-auto">Una revolución en la psicoterapia moderna para cultivar la resiliencia y el bienestar emocional.</p>
+                <p class="max-w-prose mx-auto text-base leading-relaxed mb-10">
+                    En las últimas décadas, la psicoterapia ha integrado prácticas contemplativas ancestrales, adaptándolas a un marco clínico basado en la evidencia. La práctica de Mindfulness (o atención plena) y la Compasión se han ido incorporando, como componente principal o complementario a una gran variedad de modelos de tratamiento psicológico, ofreciendo herramientas poderosas para manejar el sufrimiento, regular las emociones y fomentar una relación más sana con uno mismo. Esta aplicación interactiva explora qué son, cómo funcionan y por qué se han vuelto tan relevantes.
+                </p>
+                <a href="#conceptos" class="bg-[#C97C5D] text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform transform hover:scale-105">Explorar Más</a>
+            </div>
+        </section>
+
+        <section id="conceptos" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-[#2D4250]">Conceptos Clave</h3>
+                    <p class="text-md text-[#5A8D8D] mt-2">Entendiendo las bases del cambio terapéutico.</p>
+                    <p class="max-w-prose mx-auto text-base leading-relaxed mt-4">
+                        El Mindfulness y compasión son constructos distintos con funciones complementarias. El Mindfulness actúa como el fundamento de la conciencia, permitiéndonos ver nuestra experiencia interna con claridad. La compasión introduce una cualidad de calidez y apoyo a esa conciencia, cambiando fundamentalmente cómo nos relacionamos con nuestras dificultades y con nosotros mismos.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="bg-[#FDF8F0] p-8 rounded-lg shadow-md">
+                        <div class="text-4xl mb-4">🧠</div>
+                        <h4 class="text-2xl font-bold mb-3">Mindfulness (Atención Plena)</h4>
+                        <p class="mb-4">Es la capacidad de prestar atención de manera intencional al momento presente, sin juzgar. Se trata de una conciencia clara de lo que sucede mientras sucede, tanto en nuestro mundo interno (pensamientos, emociones, sensaciones) como externo.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><span class="font-semibold">Atención al presente:</span> Anclarse en el aquí y el ahora.</li>
+                            <li><span class="font-semibold">Aceptación sin juicio:</span> Observar la experiencia sin criticarla.</li>
+                            <li><span class="font-semibold">Intencionalidad:</span> Dirigir la atención de forma deliberada.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-[#FDF8F0] p-8 rounded-lg shadow-md">
+                        <div class="text-4xl mb-4">❤️</div>
+                        <h4 class="text-2xl font-bold mb-3">Compasión</h4>
+                        <p class="mb-4">Implica tratarse a uno mismo y a los demás con amabilidad, cuidado y preocupación frente al sufrimiento. Es una respuesta emocional positiva al dolor y al fracaso, reconociéndolos como parte de la experiencia humana compartida.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><span class="font-semibold">Amabilidad:</span> Ser cálido y comprensivo con uno mismo y los demás.</li>
+                            <li><span class="font-semibold">Humanidad compartida:</span> Reconocer que el sufrimiento es parte de la experiencia de todos.</li>
+                            <li><span class="font-semibold">Mindfulness:</span> Mantener una conciencia equilibrada del dolor, sin suprimirlo ni exagerarlo.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="modelos" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-[#2D4250]">Programas Estandarizados basados en Mindfulness</h3>
+                    <p class="text-md text-[#5A8D8D] mt-2">Intervenciones basadas en la evidencia que integran estas prácticas.</p>
+                     <p class="max-w-prose mx-auto text-base leading-relaxed mt-4">
+                        A partir de los conceptos de mindfulness y autocompasión, se han desarrollado varios programas de intervención estructurados que han sido validados científicamente. Estos modelos aplican los principios de manera sistemática para abordar condiciones específicas, desde la reducción del estrés y la prevención de recaídas depresivas hasta el tratamiento de la desregulación emocional severa. Cada modelo tiene un enfoque y un conjunto de técnicas particulares, diseñados para poblaciones distintas.
+                    </p>
+                </div>
+                <div>
+                    <div class="flex flex-wrap justify-center border-b border-gray-300 mb-8">
+                        <button class="tab-button text-sm md:text-base py-3 px-5 font-medium border-b-2 border-transparent transition-colors duration-300 active" data-tab="mbsr">MBSR</button>
+                        <button class="tab-button text-sm md:text-base py-3 px-5 font-medium border-b-2 border-transparent transition-colors duration-300" data-tab="mbct">MBCT</button>
+                        <button class="tab-button text-sm md:text-base py-3 px-5 font-medium border-b-2 border-transparent transition-colors duration-300" data-tab="msc">MSC</button>
+                        <button class="tab-button text-sm md:text-base py-3 px-5 font-medium border-b-2 border-transparent transition-colors duration-300" data-tab="dbt">DBT</button>
+                        <button class="tab-button text-sm md:text-base py-3 px-5 font-medium border-b-2 border-transparent transition-colors duration-300" data-tab="act">ACT</button>
+                    </div>
+
+                    <div id="mbsr" class="tab-content active bg-white p-8 rounded-lg shadow-md">
+                        <h5 class="text-xl font-bold mb-2">Reducción del Estrés Basada en Mindfulness (MBSR)</h5>
+                        <p class="font-medium text-[#5A8D8D] mb-4">Desarrollado por Jon Kabat-Zinn</p>
+                        <p>Es un programa de 8 semanas, pionero en la integración del mindfulness en la medicina y psicología occidental. No está diseñado para un trastorno específico, sino para ayudar a las personas a afrontar el estrés, el dolor crónico y la enfermedad. Se enfoca en cultivar una conciencia plena a través de prácticas formales (meditación sentada, escaneo corporal, yoga suave) e informales (atención a actividades cotidianas).</p>
+                    </div>
+                    <div id="mbct" class="tab-content bg-white p-8 rounded-lg shadow-md">
+                        <h5 class="text-xl font-bold mb-2">Terapia Cognitiva Basada en Mindfulness (MBCT)</h5>
+                         <p class="font-medium text-[#5A8D8D] mb-4">Desarrollada por Zindel Segal, Mark Williams y John Teasdale</p>
+                        <p>Combina elementos de MBSR con principios de la terapia cognitivo-conductual (TCC). Es un programa de 8 semanas diseñado específicamente para prevenir recaídas en personas con depresión recurrente. Enseña a los participantes a relacionarse de manera diferente con sus pensamientos y sentimientos negativos, viéndolos como eventos mentales pasajeros en lugar de identificarse con ellos, rompiendo así el ciclo de rumiación que conduce a la recaída.</p>
+                    </div>
+                    <div id="msc" class="tab-content bg-white p-8 rounded-lg shadow-md">
+                        <h5 class="text-xl font-bold mb-2">Mindful Self-Compassion (MSC)</h5>
+                         <p class="font-medium text-[#5A8D8D] mb-4">Desarrollado por Kristin Neff y Christopher Germer</p>
+                        <p>Es un programa de 8 semanas diseñado explícitamente para cultivar la habilidad de la autocompasión. A diferencia de otros programas donde la compasión es un componente, en MSC es el foco central. Enseña a los participantes a responder a los momentos difíciles de su vida con amabilidad, cuidado y comprensión, en lugar de la autocrítica. Combina prácticas de mindfulness y ejercicios de compasión para desarrollar la resiliencia emocional.</p>
+                    </div>
+                    <div id="dbt" class="tab-content bg-white p-8 rounded-lg shadow-md">
+                        <h5 class="text-xl font-bold mb-2">Terapia Dialéctico-Conductual (DBT)</h5>
+                         <p class="font-medium text-[#5A8D8D] mb-4">Desarrollada por Marsha Linehan</p>
+                        <p>Es un tratamiento integral diseñado originalmente para el trastorno límite de la personalidad, y ahora utilizado para otros problemas de desregulación emocional. El mindfulness es el módulo central de habilidades de DBT. Se enseña como una herramienta fundamental para tomar control de la propia mente, observar las emociones sin actuar impulsivamente, y participar plenamente en el momento presente, facilitando la aplicación de otras habilidades de regulación emocional, tolerancia al malestar y efectividad interpersonal.</p>
+                    </div>
+                    <div id="act" class="tab-content bg-white p-8 rounded-lg shadow-md">
+                        <h5 class="text-xl font-bold mb-2">Terapia de Aceptación y Compromiso (ACT)</h5>
+                         <p class="font-medium text-[#5A8D8D] mb-4">Desarrollada por Steven C. Hayes</p>
+                        <p>En lugar de tratar de eliminar los pensamientos o sentimientos difíciles, ACT utiliza el mindfulness y la aceptación para ayudar a las personas a desarrollar flexibilidad psicológica. El objetivo es crear una vida rica y significativa, aceptando el dolor que inevitablemente la acompaña. El mindfulness se usa para "defusionarse" de los pensamientos (verlos como lo que son, no como la realidad) y para conectar con el momento presente, permitiendo así actuar en dirección a los valores personales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tecnicas" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-[#2D4250]">Prácticas Fundamentales del Mindfulness</h3>
+                    <p class="text-md text-[#5A8D8D] mt-2">Ejercicios y prácticas para cultivar la conciencia y la amabilidad.</p>
+                    <p class="max-w-prose mx-auto text-base leading-relaxed mt-4">
+                        Los programas estandarizados basados en Mindfulness integran un conjunto de prácticas formales e informales, que de acuerdo con la evidencia se recomiendan practicar de manera diaria, ya que así se garantizan el desarrollo de las habilidades que el mindfulness ofrece.
+                    </p>
+                    <p class="max-w-prose mx-auto text-sm italic text-gray-500 mt-4">
+                        (Se recomienda aprender las prácticas del Mindfulness y Compasión a través de un programa estandarizado o un facilitador/a certificado/a)
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">🌬️</div>
+                        <h5 class="font-bold text-lg mb-2">Atención a la Respiración</h5>
+                        <p class="text-sm mb-4">Es la meditación mindfulness fundamental. Se utiliza la respiración como un ancla al momento presente. El objetivo no es controlar la respiración, sino observarla tal cual es, notando cómo la mente divaga y regresándola amablemente.</p>
+                         <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Siéntate en una postura digna pero cómoda. Siente las sensaciones de la respiración en tu abdomen o en las fosas nasales. Sigue cada inhalación y exhalación. Cuando notes que tu mente se ha ido, felicítate por darte cuenta y guía tu atención de vuelta al aire entrando y saliendo.</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">🧘‍♂️</div>
+                        <h5 class="font-bold text-lg mb-2">Escaneo Corporal</h5>
+                        <p class="text-sm mb-4">Esta práctica entrena la atención al llevarla de forma secuencial por todo el cuerpo, notando las sensaciones (calor, tensión, hormigueo) con curiosidad y sin juicio. Ayuda a habitar el cuerpo y a anclar la mente en el presente.</p>
+                        <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Ubicándote en una posición cómoda, sentado(a) o recostado(a), dirigiendo la atención a las sensaciones corporales del pie izquierdo. Simplemente notando lo que sientes. Luego, avanzando lentamente por el pie, tobillo, pantorrilla, y así sucesivamente, recorriendo todo el cuerpo hasta la coronilla.</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">🚶‍♀️</div>
+                        <h5 class="font-bold text-lg mb-2">Meditación Caminando</h5>
+                        <p class="text-sm mb-4">Esta técnica integra la atención plena en el movimiento. En lugar de caminar para llegar a un sitio, el propósito es la experiencia misma de caminar, prestando atención a las sensaciones en los pies y el cuerpo.</p>
+                         <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Busca un espacio corto para caminar. Camina más lento de lo habitual. Siente cómo se levanta un talón, el pie avanza y luego hace contacto con el suelo. Sincroniza la respiración con tus pasos si te ayuda. El foco está en sentir, no en pensar.</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">💖</div>
+                        <h5 class="font-bold text-lg mb-2">Meditación de Bondad Amorosa</h5>
+                        <p class="text-sm mb-4">Conocida como "Metta", esta práctica cultiva activamente sentimientos de calidez, amabilidad y buenos deseos. Ayuda a contrarrestar la autocrítica y a desarrollar una actitud de cuidado hacia uno mismo y los demás.</p>
+                         <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Con atención plena, repitiendo internamente frases como: "Que yo esté seguro. Que yo sea feliz. Que yo esté sano. Que yo viva con calma". Luego, trayendo a la mente a un ser querido(a), deseándole lo mismo. Gradualmente, extendiendo estos deseos y anhelos a otras personas.</p>
+                        </div>
+                    </div>
+                    <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">⏸️</div>
+                        <h5 class="font-bold text-lg mb-2">La Pausa Autocompasiva</h5>
+                        <p class="text-sm mb-4">Es una herramienta de "primeros auxilios" emocionales para usar en momentos de estrés o dolor agudo. Estructura la respuesta compasiva en tres pasos sencillos y recordables.</p>
+                         <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Cuando te sientas abrumado: 1. Reconoce: "Este es un momento de sufrimiento". 2. Normaliza con humanidad compartida: "Este sufrimiento es parte de ser humano". 3. Sé amable: Ponte una mano en el corazón y pregúntate, "¿Qué necesito en este momento?".</p>
+                        </div>
+                    </div>
+                     <div class="bg-[#FDF8F0] p-6 rounded-lg shadow-md flex flex-col">
+                        <div class="text-3xl mb-3">✍️</div>
+                        <h5 class="font-bold text-lg mb-2">Diario Autocompasivo</h5>
+                        <p class="text-sm mb-4">Esta técnica ayuda a reformular activamente la autocrítica. Al escribir sobre eventos difíciles desde una perspectiva compasiva, se practica un cambio consciente en la narrativa interna, pasando del juicio al apoyo.</p>
+                         <div class="mt-auto pt-4 border-t border-[#C97C5D]/30">
+                            <h6 class="font-semibold text-sm mb-2 text-[#C97C5D]">Breve ejemplificación de la práctica:</h6>
+                            <p class="text-xs">Piensa en algo del día que te haya hecho sentir mal contigo mismo. Escribe sobre ello, pero imaginando que le escribes a un amigo muy querido que pasó por lo mismo. ¿Qué palabras de consuelo, comprensión y aliento le ofrecerías?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evidencia" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-[#2D4250]">Evidencia y Beneficios</h3>
+                    <p class="text-md text-[#5A8D8D] mt-2">Resultados respaldados por la investigación científica.</p>
+                    <p class="max-w-prose mx-auto text-base leading-relaxed mt-4">
+                        La eficacia de las intervenciones basadas en mindfulness y compasión está respaldada por una creciente cantidad de estudios científicos. Estos enfoques han demostrado ser efectivos para una amplia gama de condiciones psicológicas y médicas. El gráfico a continuación resume la reducción de síntomas reportada en meta-análisis para varias áreas clave, mientras que las tarjetas destacan los beneficios transversales que los participantes suelen experimentar.
+                    </p>
+                </div>
+                
+                <div class="mb-12 bg-white p-8 rounded-lg shadow-md">
+                    <h4 class="text-xl font-bold text-center mb-4">Eficacia en la Reducción de Síntomas</h4>
+                    <div class="chart-container">
+                        <canvas id="efficacyChart"></canvas>
+                    </div>
+                    <div class="mt-8 text-xs text-gray-600 max-w-3xl mx-auto">
+                        <h5 class="font-semibold text-center mb-2">Fuentes de los datos (Meta-análisis representativos):</h5>
+                        <ul class="space-y-2">
+                            <li><p class="pl-3 -indent-3"><strong>Depresión y Ansiedad:</strong> Hofmann, S. G., Sawyer, A. T., Witt, A. A., & Oh, D. (2010). The effect of mindfulness-based therapy on anxiety and depression: A meta-analytic review. <em>Journal of Consulting and Clinical Psychology, 78</em>(2), 169–183.</p></li>
+                            <li><p class="pl-3 -indent-3"><strong>Estrés Percibido:</strong> Grossman, P., Niemann, L., Schmidt, S., & Walach, H. (2004). Mindfulness-based stress reduction and health benefits: A meta-analysis. <em>Journal of Psychosomatic Research, 57</em>(1), 35–43.</p></li>
+                             <li><p class="pl-3 -indent-3"><strong>Dolor Crónico:</strong> Veehof, M. M., Oskam, M. J., Schreurs, K. M., & Bohlmeijer, E. T. (2016). Acceptance- and mindfulness-based interventions for the treatment of chronic pain: a meta-analytic review. <em>Cognitive Behaviour Therapy, 45</em>(1), 5-31.</p></li>
+                        </ul>
+                        <p class="text-center mt-4 italic">Nota: Los porcentajes en el gráfico son ilustrativos y representan los hallazgos promedio en la literatura.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">🧘‍♀️</div>
+                        <h5 class="font-bold mb-2">Mejora en la Regulación Emocional</h5>
+                        <p class="text-sm">Aumenta la capacidad de manejar emociones difíciles sin reaccionar de forma impulsiva.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">🔄</div>
+                        <h5 class="font-bold mb-2">Reducción de la Rumiación</h5>
+                        <p class="text-sm">Disminuye la tendencia a quedar atrapado en patrones de pensamiento negativos y repetitivos.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">💡</div>
+                        <h5 class="font-bold mb-2">Aumento de la Flexibilidad Cognitiva</h5>
+                        <p class="text-sm">Promueve la habilidad de ver las situaciones desde múltiples perspectivas y no aferrarse a una sola narrativa.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">🤝</div>
+                        <h5 class="font-bold mb-2">Mejora de las Relaciones Interpersonales</h5>
+                        <p class="text-sm">La autocompasión y la atención plena fomentan la empatía y la conexión con los demás.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">💪</div>
+                        <h5 class="font-bold mb-2">Fomento de la Resiliencia</h5>
+                        <p class="text-sm">Ayuda a recuperarse más rápidamente de la adversidad y el estrés.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-2xl mb-3">🌿</div>
+                        <h5 class="font-bold mb-2">Disminución de la Autocrítica</h5>
+                        <p class="text-sm">Reemplaza la voz crítica interna por una más amable y comprensiva.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="referencias" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6 max-w-4xl">
+                 <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-[#2D4250]">Referencias Clave</h3>
+                    <p class="text-md text-[#5A8D8D] mt-2">Lecturas fundamentales para profundizar en el tema.</p>
+                </div>
+                <ul class="space-y-4 text-sm bg-white p-8 rounded-lg shadow-sm text-left">
+                    <li><p class="pl-4 -indent-4">Germer, C. K. (2009). <em>The mindful path to self-compassion: Freeing yourself from destructive thoughts and emotions</em>. Guilford Press.</p></li>
+                    <li><p class="pl-4 -indent-4">Hayes, S. C., Strosahl, K. D., & Wilson, K. G. (2012). <em>Acceptance and commitment therapy: The process and practice of mindful change</em> (2nd ed.). Guilford Press.</p></li>
+                    <li><p class="pl-4 -indent-4">Kabat-Zinn, J. (2013). <em>Full catastrophe living: Using the wisdom of your body and mind to face stress, pain, and illness</em> (Rev. ed.). Bantam Books.</p></li>
+                    <li><p class="pl-4 -indent-4">Linehan, M. M. (2015). <em>DBT® skills training manual</em> (2nd ed.). Guilford Press.</p></li>
+                    <li><p class="pl-4 -indent-4">Neff, K. D. (2011). <em>Self-compassion: The proven power of being kind to yourself</em>. William Morrow.</p></li>
+                    <li><p class="pl-4 -indent-4">Segal, Z. V., Williams, J. M. G., & Teasdale, J. D. (2013). <em>Mindfulness-based cognitive therapy for depression: A new approach to preventing relapse</em> (2nd ed.). Guilford Press.</p></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-8">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>&copy; 2025 Informe Interactivo. Creado con fines educativos.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === target) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = mobileMenu.querySelectorAll('a');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const ctx = document.getElementById('efficacyChart').getContext('2d');
+            const efficacyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Depresión', 'Ansiedad', 'Estrés Percibido', 'Dolor Crónico'],
+                    datasets: [{
+                        label: 'Reducción Promedio de Síntomas (%)',
+                        data: [55, 52, 45, 35],
+                        backgroundColor: [
+                            'rgba(90, 141, 141, 0.6)',
+                            'rgba(201, 124, 93, 0.6)',
+                            'rgba(90, 141, 141, 0.4)',
+                            'rgba(201, 124, 93, 0.4)',
+                        ],
+                        borderColor: [
+                            'rgba(90, 141, 141, 1)',
+                            'rgba(201, 124, 93, 1)',
+                            'rgba(90, 141, 141, 1)',
+                            'rgba(201, 124, 93, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 70,
+                            title: {
+                                display: true,
+                                text: 'Porcentaje de Reducción'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-lg');
+                } else {
+                    header.classList.remove('shadow-lg');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
